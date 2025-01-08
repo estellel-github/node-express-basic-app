@@ -3,12 +3,12 @@
     "id": 1,
     "title": "The Odin Project",
     "author": "Thor",
-    "reserved": false
+    "reserved": true
   },
   {
     "id": 2,
     "title": "Node.js Mastery",
     "author": "Odin",
-    "reserved": false
+    "reserved": true
   }
 ]
