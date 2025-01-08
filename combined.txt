@@ -1,0 +1,195 @@
+Updated on 01/08/25 03:22:50 PM CET by bubuntu
+
+--------------------------
+Path: app.js
+
+require("dotenv").config();
+
+console.log(`Port from environment: ${process.env.PORT}`);
+
+const path = require("path");
+const PORT = process.env.PORT || 3000;
+
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "about.html"));
+});
+
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "contact.html"));
+});
+
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "about.html"));
+});
+
+app.get("*", (req, res) => {
+  res.status(404).sendFile(path.join(__dirname, "404.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}/`);
+});
+
+--------------------------
+Path: contact.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact</title>
+</head>
+
+<body>
+  <h1>Contact</h1>
+  <p>Feel free to reach out via this page.</p>
+</body>
+
+</html>
+--------------------------
+Path: 404.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Not Found</title>
+</head>
+
+<body>
+  <h1>404 - Page Not Found</h1>
+  <p>The page you are looking for does not exist.</p>
+</body>
+
+</html>
+--------------------------
+Path: routes/authorRouter.js
+
+const { Router } = require("express");
+
+const authorRouter = Router();
+
+authorRouter.get("/", (req, res) => res.send("All authors"));
+authorRouter.get("/:authorId", (req, res) => {
+  const { authorId } = req.params;
+  res.send(`Author ID: ${authorId}`);
+});
+
+module.exports = authorRouter;
+
+--------------------------
+Path: about.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+</head>
+
+<body>
+  <h1>About Us</h1>
+  <p>This page tells you all about our site.</p>
+</body>
+
+</html>
+--------------------------
+Path: index.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+</head>
+
+<body>
+  <h1>Welcome to the Homepage</h1>
+  <p>This is the main page of our site.</p>
+</body>
+
+</html>
+--------------------------
+Path: package.json
+
+{
+  "name": "node-express-basic-info-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --watch app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
+
+--------------------------
+Path: combined.txt
+
+
+--------------------------
+Path: index.js
+
+require("dotenv").config();
+console.log(`Port from environment: ${process.env.PORT}`);
+const PORT = process.env.PORT || 3000;
+
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
+
+const server = http.createServer((req, res) => {
+  let filePath = "";
+
+  switch (req.url) {
+    case "/":
+      filePath = path.join(__dirname, "index.html");
+      break;
+    case "/about":
+      filePath = path.join(__dirname, "about.html");
+      break;
+    case "/contact-me":
+      filePath = path.join(__dirname, "contact-me.html");
+      break;
+    default:
+      filePath = path.join(__dirname, "404.html");
+      break;
+  }
+
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Server Error");
+    } else {
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(content, "utf-8");
+    }
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Express app running at http://localhost:${PORT}/`);
+});
+
