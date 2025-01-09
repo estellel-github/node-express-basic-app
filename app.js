@@ -5,6 +5,8 @@ import staticRouter from "./routes/staticRouter.js";
 import bookRouter from "./routes/api/bookRouter.js";
 import authorRouter from "./routes/api/authorRouter.js";
 import contactRouter from "./routes/api/contactRouter.js";
+import notFound from "./middleware/notFound.js";
+import errorHandler from "./middleware/error.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
