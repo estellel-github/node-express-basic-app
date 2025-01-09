@@ -51,7 +51,7 @@ This is a toy project for learning/practice, as part of The Odin Project Node.js
 
 ### Prerequisites
 
-Ensure you have Node.js and npm installed.
+Ensure you have Node.js and pnpm installed.
 
 ### Installation
 
