@@ -1,40 +1,23 @@
-const { Router } = require("express");
-const { readJsonFile, writeJsonFile } = require("../../utils/fileOperations");
+import { Router } from "express";
+import {
+  getAuthors,
+  getAuthorById,
+  createAuthor,
+  updateAuthor,
+  deleteAuthor,
+} from "../../controllers/authorController.js";
 
 const authorRouter = Router();
 const authorsFile = "authors.json";
 
-authorRouter.get("/", (req, res) => {
-  const authors = readJsonFile(authorsFile);
-  res.json(authors);
-});
+authorRouter.get("/", getAuthors);
 
-authorRouter.get("/:authorId", (req, res) => {
-  const authors = readJsonFile(authorsFile);
-  const author = authors.find((a) => a.id === parseInt(req.params.authorId));
-  if (!author) {
-    return res.status(404).json({ error: "Author not found" });
-  }
-  res.json(author);
-});
+authorRouter.get("/:authorId", getAuthorById);
 
-authorRouter.post("/", (req, res) => {
-  const authors = readJsonFile(authorsFile);
-  const newAuthor = req.body;
+authorRouter.post("/", createAuthor);
 
-  if (!newAuthor.name || !Array.isArray(newAuthor.books)) {
-    return res.status(400).json({ error: "Invalid author data." });
-  }
+authorRouter.put("/", updateAuthor);
 
-  const newId = authors.length > 0 ? authors[authors.length - 1].id + 1 : 1;
-  newAuthor.id = newId;
+authorRouter.delete("/", deleteAuthor);
 
-  authors.push(newAuthor);
-  writeJsonFile(authorsFile, authors);
-
-  res
-    .status(201)
-    .json({ message: "Author created successfully!", author: newAuthor });
-});
-
-module.exports = authorRouter;
+export default authorRouter;

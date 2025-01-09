@@ -1,36 +1,25 @@
-const { Router } = require("express");
-const { readJsonFile, writeJsonFile } = require("../../utils/fileOperations");
+import { Router } from "express";
+import {
+  getBookById,
+  getBooks,
+  createBook,
+  updateBook,
+  deleteBook,
+  reserveBook,
+} from "../../controllers/bookController.js";
 
 const bookRouter = Router();
-const booksFile = "books.json";
 
-bookRouter.get("/", (req, res) => {
-  const books = readJsonFile(booksFile);
-  res.json(books);
-});
+bookRouter.get("/", getBooks);
 
-bookRouter.get("/:bookId", (req, res) => {
-  const books = readJsonFile(booksFile);
-  const book = books.find((b) => b.id === parseInt(req.params.bookId));
-  if (!book) return res.status(404).json({ error: "Book not found" });
-  res.json(book);
-});
+bookRouter.get("/:bookId", getBookById);
 
-bookRouter.get("/:bookId/reserve", (req, res) => {
-  const books = readJsonFile(booksFile);
-  const bookIndex = books.findIndex(
-    (b) => b.id === parseInt(req.params.bookId)
-  );
-  if (bookIndex === -1)
-    return res.status(404).json({ error: "Book not found" });
+bookRouter.post("/:bookId", createBook);
 
-  if (books[bookIndex].reserved) {
-    return res.json({ message: "Book is already reserved." });
-  }
+bookRouter.put("/:bookId", updateBook);
 
-  books[bookIndex].reserved = true;
-  writeJsonFile(booksFile, books);
-  res.json({ message: "Book reserved successfully.", book: books[bookIndex] });
-});
+bookRouter.put("/:bookId", deleteBook);
 
-module.exports = bookRouter;
+bookRouter.get("/:bookId/reserve", reserveBook);
+
+export default bookRouter;

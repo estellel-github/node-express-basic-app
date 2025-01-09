@@ -1,11 +1,13 @@
-require("dotenv").config();
-const express = require("express");
-const path = require("path");
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import staticRouter from "./routes/staticRouter.js";
+import bookRouter from "./routes/api/bookRouter.js";
+import authorRouter from "./routes/api/authorRouter.js";
+import contactRouter from "./routes/api/contactRouter.js";
 
-const staticRouter = require("./routes/staticRouter");
-const bookRouter = require("./routes/api/bookRouter");
-const authorRouter = require("./routes/api/authorRouter");
-const contactRouter = require("./routes/api/contactRouter");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +20,9 @@ app.use("/", staticRouter);
 app.use("/books", bookRouter);
 app.use("/authors", authorRouter);
 app.use("/contact", contactRouter);
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.use((req, res) =>
   res.status(404).sendFile(path.join(__dirname, "public/404.html"))
