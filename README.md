@@ -64,11 +64,11 @@ Ensure you have Node.js and pnpm installed.
 
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 3. Start the server:
    ```bash
-   npm start
+   pnpm start
    ```
 4. Open your browser or API client at: http://localhost:3001
 
