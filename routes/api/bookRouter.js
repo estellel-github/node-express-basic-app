@@ -18,7 +18,7 @@ bookRouter.post("/:bookId", createBook);
 
 bookRouter.put("/:bookId", updateBook);
 
-bookRouter.put("/:bookId", deleteBook);
+bookRouter.delete("/:bookId", deleteBook);
 
 bookRouter.get("/:bookId/reserve", reserveBook);
 
