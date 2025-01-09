@@ -1,10 +1,11 @@
-import { readJsonFile, writeJsonFile } from "../../utils/fileOperations.js";
+import { readJsonFile, writeJsonFile } from "../utils/fileOperations.js";
 
-const books = readJsonFile(booksFile);
+const booksFile = "books.json";
 
 // @desc    Get all books
 // @route   GET /api/books
-export const getBooks = (req, res) => {
+export const getBooks = (req, res, next) => {
+  const books = readJsonFile(booksFile);
   if (!books) {
     const error = new Error("No books to display");
     error.status = 404;
@@ -14,8 +15,9 @@ export const getBooks = (req, res) => {
 };
 
 // @desc    Get single book
-// @route   GET /api/books/:id
-export const getBookById = (req, res) => {
+// @route   GET /api/books/:bookId
+export const getBookById = (req, res, next) => {
+  const books = readJsonFile(booksFile);
   const book = books.find((b) => b.id === parseInt(req.params.bookId));
   if (!book) {
     const error = new Error("Book not found");
@@ -26,8 +28,8 @@ export const getBookById = (req, res) => {
 };
 
 // @desc    Reserve a book
-// @route   GET /api/books/:id/reserve
-export const reserveBook = (req, res) => {
+// @route   GET /api/books/:bookId/reserve
+export const reserveBook = (req, res, next) => {
   const books = readJsonFile(booksFile);
   const bookIndex = books.findIndex(
     (b) => b.id === parseInt(req.params.bookId)
@@ -48,7 +50,8 @@ export const reserveBook = (req, res) => {
 
 // @desc    Create new book
 // @route   POST /api/books
-export const createBook = (req, res) => {
+export const createBook = (req, res, next) => {
+  const books = readJsonFile(booksFile);
   const newBook = req.body;
 
   if (!newBook.title || !newBook.author) {
@@ -69,8 +72,11 @@ export const createBook = (req, res) => {
 };
 
 // @desc    Update book
-// @route   PUT /api/books/:id
-export const updateBook = (req, res) => {
+// @route   PUT /api/books/:bookId
+export const updateBook = (req, res, next) => {
+  console.log("Received data:", req.body);
+
+  const books = readJsonFile(booksFile);
   const bookIndex = books.findIndex(
     (b) => b.id === parseInt(req.params.bookId)
   );
@@ -90,8 +96,9 @@ export const updateBook = (req, res) => {
 };
 
 // @desc    Delete book
-// @route   DELETE /api/books/:id
-export const deleteBook = (req, res) => {
+// @route   DELETE /api/books/:bookId
+export const deleteBook = (req, res, next) => {
+  const books = readJsonFile(booksFile);
   const bookIndex = books.findIndex(
     (b) => b.id === parseInt(req.params.bookId)
   );
